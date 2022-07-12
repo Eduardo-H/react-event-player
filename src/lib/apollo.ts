@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 export const client = new ApolloClient({
-  uri: 'https://api-us-east-1.graphcms.com/v2/cl5hijxy11d4n01ug6cbrcbyj/master',
+  uri: 'https://api-sa-east-1.hygraph.com/v2/cl5hies3m1efi01t5c3tyagaz/master',
   cache: new InMemoryCache()
 });
