@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { format, isPast } from 'date-fns';
 import { CheckCircle, Lock } from 'phosphor-react';
+import classnames from 'classnames';
 
 interface LessonProps {
   title: string;
@@ -15,8 +16,12 @@ export function Lesson({
   availableAt,
   type
 }: LessonProps) {
+  const { slug: urlSlug } = useParams<{ slug: string }>();
+
   const isLessonAvailable = isPast(availableAt);
   const availableDateFormatted = format(availableAt, "eeee • LLLL do • p");
+
+  const isLessonActive = urlSlug === slug;
 
   return (
     <Link to={`/event/lesson/${slug}`} className="group">
@@ -24,10 +29,17 @@ export function Lesson({
         {availableDateFormatted}
       </span>
 
-      <div className="rounded border border-gray-500 p-4 mt-2 group-hover:border-green-500 transition-colors">
+      <div 
+        className={classnames('rounded border border-gray-500 p-4 mt-2 group-hover:border-green-500 transition-colors', {
+          'bg-green-500': isLessonActive
+        })}
+      >
         <header className="flex items-center justify-between">
           {isLessonAvailable ? (
-            <span className="flex items-center gap-2 text-sm text-blue-500 font-medium">
+            <span className={classnames('flex items-center gap-2 text-sm  font-medium', {
+              'text-white': isLessonActive,
+              'text-blue-500': !isLessonActive
+            })}>
               <CheckCircle size={20} />
               Released content
             </span>
@@ -38,12 +50,20 @@ export function Lesson({
             </span>
           )}
 
-          <span className="text-xs rounded border border-green-300 font-bold py-[0.125rem] px-2">
+          <span className={classnames('text-xs rounded border font-bold py-[0.125rem] px-2', {
+            'border-white': isLessonActive,
+            'border-green-300': !isLessonActive
+          })}>
             {type === 'live' ? 'LIVE' : 'CLASS'}
           </span>
         </header>
 
-        <strong className="text-gray-200 mt-5 block">
+        <strong 
+          className={classnames('mt-5 block', {
+            'text-white': isLessonActive,
+            'text-gray-200': !isLessonActive
+          })}
+        >
           {title}
         </strong>
       </div>
