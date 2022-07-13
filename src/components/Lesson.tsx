@@ -24,7 +24,13 @@ export function Lesson({
   const isLessonActive = urlSlug === slug;
 
   return (
-    <Link to={`/event/lesson/${slug}`} className="group">
+    <Link 
+      to={isLessonAvailable ? `/event/lesson/${slug}` : ''} 
+      className={classnames('', {
+        'group': isLessonAvailable,
+        'disabled cursor-not-allowed': !isLessonAvailable
+      })}
+    >
       <span className="text-gray-300">
         {availableDateFormatted}
       </span>

@@ -1,8 +1,10 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CircleNotch } from 'phosphor-react';
 
 import { useCreateSubscriberMutation } from '../graphql/generated';
 import { Logo } from '../components/Logo';
+import { Footer } from '../components/Footer';
 
 export function Subscribe() {
   const navigate = useNavigate();
@@ -40,17 +42,19 @@ export function Subscribe() {
         </div>
 
         <div className="p-8 bg-gray-700 border border-gray-500 rounded">
-          <strong className="text-2xl mb-6 block">Subscribe for free</strong>
+          <strong className="text-2xl mb-6 block">
+            Subscribe for free
+          </strong>
 
           <form onSubmit={handleSubscribe} className="flex flex-col gap-2 w-full">
             <input 
-              className="bg-gray-900 rounded px-5 h-14"
+              className="bg-gray-900 rounded px-5 h-14 focus:outline-none focus:border-green-500 focus:ring-green-500 focus:ring-1"
               type="text" 
               placeholder="Your full name"
               onChange={(event) => setName(event.target.value)}
             />
             <input 
-              className="bg-gray-900 rounded px-5 h-14"
+              className="bg-gray-900 rounded px-5 h-14 focus:outline-none focus:border-green-500 focus:ring-green-500 focus:ring-1"
               type="email" 
               placeholder="Type your e-mail"
               onChange={(event) => setEmail(event.target.value)}
@@ -61,13 +65,20 @@ export function Subscribe() {
               disabled={loading}
               className="bg-green-500 uppercase mt-4 py-4 rounded font-bold text-sm hover:bg-green-300 transition-colors disabled:opacity-50"
             >
-              Subscribe now
+              { loading 
+                ? (
+                  <CircleNotch size={20} className="animate-spin mx-auto" />
+                ) : (
+                  <span>Subscribe now</span>
+              )}
             </button>
           </form>
         </div>
       </div>
 
       <img src="/src/assets/code-mockup.png" className="mt-10" alt="Code mockup" />
+
+      <Footer />
     </div>
   );
 }
