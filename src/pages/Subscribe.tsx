@@ -1,30 +1,42 @@
-import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CircleNotch } from 'phosphor-react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import classnames from 'classnames';
 
 import { useCreateSubscriberMutation } from '../graphql/generated';
 import { Logo } from '../components/Logo';
 import { Footer } from '../components/Footer';
 
+interface SubscribeFormData {
+  name: string;
+  email: string;
+}
+
+const subscribeFormSchema = yup.object({
+  name: yup.string().required('This field is required'),
+  email: yup.string().required('This field is required'),
+}).required();
+
 export function Subscribe() {
   const navigate = useNavigate();
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-
   const [createSubscriber, { loading }] = useCreateSubscriberMutation();
+  const { register, handleSubmit, formState: { errors } } = useForm<SubscribeFormData>({
+    resolver: yupResolver(subscribeFormSchema)
+  });
 
-  async function handleSubscribe(event: FormEvent) {
-    event.preventDefault();
+  const handleSubscribe = async (data: SubscribeFormData) => {
+    console.log(data);
+    
+    // await createSubscriber({
+    //   variables: {
+    //     name,
+    //     email
+    //   }
+    // });
 
-    await createSubscriber({
-      variables: {
-        name,
-        email
-      }
-    });
-
-    navigate('/event');
+    // navigate('/event');
   }
 
   return (
@@ -46,19 +58,36 @@ export function Subscribe() {
             Subscribe for free
           </strong>
 
-          <form onSubmit={handleSubscribe} className="flex flex-col gap-2 w-full">
-            <input 
-              className="bg-gray-900 rounded px-5 h-14 focus:outline-none focus:border-green-500 focus:ring-green-500 focus:ring-1"
-              type="text" 
-              placeholder="Your full name"
-              onChange={(event) => setName(event.target.value)}
-            />
-            <input 
-              className="bg-gray-900 rounded px-5 h-14 focus:outline-none focus:border-green-500 focus:ring-green-500 focus:ring-1"
-              type="email" 
-              placeholder="Type your e-mail"
-              onChange={(event) => setEmail(event.target.value)}
-            />
+          <form onSubmit={handleSubmit(handleSubscribe)} className="flex flex-col gap-2 w-full">
+            <div>
+              <input 
+                className={classnames('bg-gray-900 rounded px-5 h-14 focus:outline-none focus:ring-1', {
+                  'focus:border-red-500 focus:ring-red-500': errors.name,
+                  'focus:border-green-500 focus:ring-green-500': !errors.name
+                })}
+                type="text" 
+                placeholder="Your full name"
+                {...register('name')}
+              />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.name?.message}
+              </p>
+            </div>
+            
+            <div>
+              <input 
+                className={classnames('bg-gray-900 rounded px-5 h-14 focus:outline-none focus:ring-1', {
+                  'focus:border-red-500 focus:ring-red-500': errors.email,
+                  'focus:border-green-500 focus:ring-green-500': !errors.email
+                })}
+                type="email" 
+                placeholder="Type your e-mail"
+                {...register('email')}
+              />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.email?.message}
+              </p>
+            </div>
 
             <button
               type="submit"
