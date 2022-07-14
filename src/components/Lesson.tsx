@@ -1,7 +1,8 @@
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { format, isPast } from 'date-fns';
 import { CheckCircle, Lock } from 'phosphor-react';
 import classnames from 'classnames';
+import { useBurgerMenu } from '../hooks/useBurgerMenu';
 
 interface LessonProps {
   title: string;
@@ -17,19 +18,26 @@ export function Lesson({
   type
 }: LessonProps) {
   const { slug: urlSlug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const { closeBurgerMenu } = useBurgerMenu();
 
   const isLessonAvailable = isPast(availableAt);
   const availableDateFormatted = format(availableAt, "eeee • LLLL do • p");
 
   const isLessonActive = urlSlug === slug;
 
+  function handleSelectLesson(slug: string) {
+    closeBurgerMenu();
+    navigate(`/event/lesson/${slug}`)
+  }
+
   return (
-    <Link 
-      to={isLessonAvailable ? `/event/lesson/${slug}` : ''} 
-      className={classnames('', {
+    <button 
+      className={classnames('text-start', {
         'group': isLessonAvailable,
         'disabled cursor-not-allowed': !isLessonAvailable
       })}
+      onClick={() => handleSelectLesson(slug)}
     >
       <span className="text-gray-300">
         {availableDateFormatted}
@@ -73,6 +81,6 @@ export function Lesson({
           {title}
         </strong>
       </div>
-    </Link>
+    </button>
   )
 }
