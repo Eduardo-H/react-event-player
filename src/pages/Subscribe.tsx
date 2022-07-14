@@ -27,21 +27,19 @@ export function Subscribe() {
   });
 
   const handleSubscribe = async (data: SubscribeFormData) => {
-    console.log(data);
-    
-    // await createSubscriber({
-    //   variables: {
-    //     name,
-    //     email
-    //   }
-    // });
+    await createSubscriber({
+      variables: {
+        name: data.name,
+        email: data.email
+      }
+    });
 
-    // navigate('/event');
+    navigate('/event');
   }
 
   return (
     <div className="min-h-screen bg-blur bg-cover bg-no-repeat flex flex-col items-center">
-      <div className="w-full max-w-[1100px] flex items-center justify-between mt-20 mx-auto">
+      <div className="w-full max-w-[1100px] md:flex items-center justify-between gap-2 mt-20 mx-auto px-5">
         <div className="max-w-[640px]">
           <Logo />
 
@@ -53,7 +51,7 @@ export function Subscribe() {
           </p>
         </div>
 
-        <div className="p-8 bg-gray-700 border border-gray-500 rounded">
+        <div className="p-8 bg-gray-700 border border-gray-500 rounded mt-5 md:mt-0">
           <strong className="text-2xl mb-6 block">
             Subscribe for free
           </strong>
@@ -61,7 +59,7 @@ export function Subscribe() {
           <form onSubmit={handleSubmit(handleSubscribe)} className="flex flex-col gap-2 w-full">
             <div>
               <input 
-                className={classnames('bg-gray-900 rounded px-5 h-14 focus:outline-none focus:ring-1', {
+                className={classnames('bg-gray-900 rounded px-5 w-full md:w-auto h-14 focus:outline-none focus:ring-1', {
                   'focus:border-red-500 focus:ring-red-500': errors.name,
                   'focus:border-green-500 focus:ring-green-500': !errors.name
                 })}
@@ -76,7 +74,7 @@ export function Subscribe() {
             
             <div>
               <input 
-                className={classnames('bg-gray-900 rounded px-5 h-14 focus:outline-none focus:ring-1', {
+                className={classnames('bg-gray-900 rounded px-5 w-full md:w-auto h-14 focus:outline-none focus:ring-1', {
                   'focus:border-red-500 focus:ring-red-500': errors.email,
                   'focus:border-green-500 focus:ring-green-500': !errors.email
                 })}
@@ -105,7 +103,7 @@ export function Subscribe() {
         </div>
       </div>
 
-      <img src="/src/assets/code-mockup.png" className="mt-10" alt="Code mockup" />
+      <img src="/src/assets/code-mockup.png" className="mt-10 px-5" alt="Code mockup" />
 
       <Footer />
     </div>
