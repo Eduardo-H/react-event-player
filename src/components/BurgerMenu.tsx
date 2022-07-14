@@ -24,7 +24,7 @@ export function BurgerMenu({ lessons }: LessonsArray) {
       }
 
       { isMenuOpen && (
-        <div className="absolute top-[4.5rem] left-0 w-full min-h-screen p-5 bg-gray-700 z-[999] transition-all duration-500 ease-in">
+        <div className="absolute top-[4.5rem] left-0 w-full min-h-screen p-5 bg-gray-700 z-[999] transition-all duration-500 ease-in border-t border-gray-600">
           <span className="font-bold text-2xl pb-6 mb-6 border-b border-gray-500 block">
             Class schedule
           </span>
