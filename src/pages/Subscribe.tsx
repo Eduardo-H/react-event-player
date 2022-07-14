@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import classnames from 'classnames';
 
-import { useCreateSubscriberMutation } from '../graphql/generated';
+import { useCreateSubscriberMutation, useGetFirstLessonSlugQuery } from '../graphql/generated';
 import { Logo } from '../components/Logo';
 import { Footer } from '../components/Footer';
 
@@ -22,6 +22,7 @@ const subscribeFormSchema = yup.object({
 export function Subscribe() {
   const navigate = useNavigate();
   const [createSubscriber, { loading }] = useCreateSubscriberMutation();
+  const { data: lessonData } = useGetFirstLessonSlugQuery();
   const { register, handleSubmit, formState: { errors } } = useForm<SubscribeFormData>({
     resolver: yupResolver(subscribeFormSchema)
   });
@@ -34,7 +35,10 @@ export function Subscribe() {
       }
     });
 
-    navigate('/event');
+    if (lessonData?.lessons)
+      navigate(`/event/lesson/${lessonData?.lessons[0].slug}`);
+    else
+      navigate('/event');
   }
 
   return (
