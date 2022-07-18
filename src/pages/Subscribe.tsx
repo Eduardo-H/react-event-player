@@ -60,7 +60,7 @@ export function Subscribe() {
             Subscribe for free
           </strong>
 
-          <form onSubmit={handleSubmit(handleSubscribe)} className="flex flex-col gap-2 w-full">
+          <form onSubmit={handleSubmit(handleSubscribe)} autoComplete="off" className="flex flex-col gap-2 w-full">
             <div>
               <input 
                 className={classnames('bg-gray-900 rounded px-5 w-full md:w-auto h-14 focus:outline-none focus:ring-1', {
