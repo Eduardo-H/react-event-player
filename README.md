@@ -21,6 +21,9 @@ The project is a platform to watch classes from an event.
 ### Typescript
 [<img src=".github/typescript.png" width="80px">](https://www.typescriptlang.org/)
 
+### GraphQL
+[<img src=".github/graphql.png" width="80px">](https://graphql.org/)
+ 
 ### ViteJS
 [<img src=".github/vitejs.png" width="80px">](https://vitejs.dev/)
 
